@@ -1,6 +1,6 @@
 {
-  "name": "ftp-sftp-deploy",
-  "version": "1.0.18",
+  "name": "deploydo",
+  "version": "1.0.19",
   "description": "Deploy your app to ftp or sftp with a single command",
   "main": "deploy.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "deploydo"
   ],
   "author": "Alexander Zerling",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "deploydo": "./deploy.js"
   },

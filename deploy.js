@@ -37,7 +37,7 @@ if (options.sample) {
   exit()
 }
 
-const configPath = options.deployConfigFile ? workingDir + options.deployConfigFile : workingDir + '/deploy.conf.js'
+const configPath = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.conf.js'
 let configObj
 try {
   configObj = require(configPath)

@@ -23,7 +23,7 @@ let files = []
 const ftp = new EasyFtp()
 
 ftp.on('open', () => {
-  console.log('\nConnection to server established\n');
+  console.log('\nConnection to server established\n')
   console.log("\n\x1b[32mUploading...\n")
   ftp.upload(files, config.remotePath, function (err) {
     if (err) {
@@ -31,6 +31,7 @@ ftp.on('open', () => {
       exit()
     }
     console.log("\n\x1b[32mDeployment Done!\n")
+    console.log('\x1b[0m')
     ftp.close()
   })
 })

@@ -1,5 +1,7 @@
 # deploydo
 
+Deploydo was created because we have a lot of projects which are simply deployed by uploading files via ftp. This process is now automated by using deploydo.
+
 ### installation 
 <code>npm install -g deploydo</code>
 

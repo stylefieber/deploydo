@@ -3,6 +3,8 @@
 ### installation 
 <code>npm install -g deploydo</code>
 
+**warning** add deploy.conf.js to your .gitignore **!**
+
 ### configuration
 Create <code>deploy.conf.js</code> file in your project directory.
 Use this as template:

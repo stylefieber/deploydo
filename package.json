@@ -28,7 +28,10 @@
   },
   "homepage": "https://github.com/stylefieber/node-ftp-sftp-deploy#readme",
   "dependencies": {
+    "current-git-branch": "^1.1.0",
     "easy-ftp": "^0.4.1",
-    "node-sftp-deploy-i": "^1.0.41"
+    "git-repo-name": "^1.0.1",
+    "node-sftp-deploy-i": "^1.0.41",
+    "readline-sync": "^1.4.10"
   }
 }

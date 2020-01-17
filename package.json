@@ -1,6 +1,6 @@
 {
   "name": "ftp-sftp-deploy",
-  "version": "1.0.8",
+  "version": "1.0.18",
   "description": "Deploy your app to ftp or sftp with a single command",
   "main": "deploy.js",
   "scripts": {
@@ -13,15 +13,17 @@
   "keywords": [
     "ftp",
     "sftp",
+    "ssh",
     "deployment",
     "deploy",
     "server",
-    "copy"
+    "copy",
+    "deploydo"
   ],
   "author": "Alexander Zerling",
   "license": "ISC",
   "bin": {
-    "deployjs": "./deploy.js"
+    "deploydo": "./deploy.js"
   },
   "bugs": {
     "url": "https://github.com/stylefieber/node-ftp-sftp-deploy/issues"

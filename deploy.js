@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
 const EasyFtp = require('easy-ftp')
 const fs = require('fs')
 const util = require('util')
@@ -7,16 +10,41 @@ const branchNameF = require('current-git-branch')
 const repoNameF = require('git-repo-name')
 const readlineSync = require('readline-sync')
 
-const branchName = branchNameF()
+//console.log(__dirname)
+//return
+
+let branchName
+try {
+  branchName = branchNameF()
+  console.log('branchname', branchName)
+} catch(err) {
+
+}
 let repoName
 if (branchName) {
-  repoName = repoNameF.sync()
+  console.log("get repo")
+  try {
+    repoName = repoNameF.sync()
+  } catch(err) {
+  }
 }
 
 const options = getArgs()
 
+if (options.sample) {
+  fs.copyFileSync(__dirname + '/deploy.sample.conf.js', workingDir + '/deploy.sample.conf.js')
+  console.log("\n\nSample file copied. Rename it to deploy.conf.js to use it.\n")
+  exit()
+}
+
 const configPath = options.deployConfigFile ? workingDir + options.deployConfigFile : workingDir + '/deploy.conf.js'
-const configObj = require(configPath)
+let configObj
+try {
+  configObj = require(configPath)
+} catch(err) {
+  console.error("\n\n\x1b[31mCannot find '"+configPath+"'. Please visit https://www.npmjs.com/package/ftp-sftp-deploy and read the documentation. Type 'deploydo sample' to get a sample file.")
+  exit()
+}
 
 let files = []
 
@@ -75,10 +103,10 @@ if (options.env) {
 async function run() {
   try {
     let really
-    if (branchName) {
-      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nRepository: ' + repoName + '\ncurrent branch: ' + branchName + '\nlocal Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
+    if (branchName && repoName) {
+      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nRepository: ' + repoName + '\ncurrent branch: ' + branchName + '\nHost: ' + config.host + '\nlocal Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
     } else {
-      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nlocal Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
+      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nHost: ' + config.host + 'local Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
     }
     if (really !== 'y' && really !== 'Y') {
       console.log("\x1b[36mDeployment cancelled by user")
@@ -143,5 +171,3 @@ function exit() {
 }
 
 run()
-
-return

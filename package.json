@@ -1,6 +1,6 @@
 {
   "name": "deploydo",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Deploy your app to ftp or sftp with a single command",
   "main": "deploy.js",
   "scripts": {

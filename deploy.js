@@ -42,7 +42,7 @@ let configObj
 try {
   configObj = require(configPath)
 } catch(err) {
-  console.error("\n\n\x1b[31mCannot find '"+configPath+"'. Please visit https://www.npmjs.com/package/ftp-sftp-deploy and read the documentation. Type 'deploydo sample' to get a sample file.")
+  console.error("\n\n\x1b[31mCannot find '"+configPath+"'. Please visit https://www.npmjs.com/package/deploydo and read the documentation. Type 'deploydo sample' to get a sample file.")
   exit()
 }
 
@@ -77,7 +77,7 @@ ftp.on('close', () => {
 })
 
 if (!configObj) {
-  console.error("\n\x1b[31mCouldn't find config. Please read the documentation: https://www.npmjs.com/package/ftp-sftp-deploy \n")
+  console.error("\n\x1b[31mCouldn't find config. Please read the documentation: https://www.npmjs.com/package/deploydo \n")
 }
 
 let config
@@ -93,7 +93,7 @@ if (options.env) {
   if (configObj.default) {
     config = configObj.default
   } else {
-    console.error("\n\n\x1b[31mCouldn't find default config environment. Please read the documentation: https://www.npmjs.com/package/ftp-sftp-deploy \n\n")
+    console.error("\n\n\x1b[31mCouldn't find default config environment. Please read the documentation: https://www.npmjs.com/package/deploydo \n\n")
     exit()
   }
 }

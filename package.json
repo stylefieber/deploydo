@@ -1,6 +1,6 @@
 {
   "name": "deploydo",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Deploy your app to ftp or sftp with a single command",
   "main": "deploy.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stylefieber/node-ftp-sftp-deploy.git"
+    "url": "git+https://github.com/stylefieber/deploydo.git"
   },
   "keywords": [
     "ftp",
@@ -26,14 +26,13 @@
     "deploydo": "./deploy.js"
   },
   "bugs": {
-    "url": "https://github.com/stylefieber/node-ftp-sftp-deploy/issues"
+    "url": "https://github.com/stylefieber/deploydo/issues"
   },
-  "homepage": "https://github.com/stylefieber/node-ftp-sftp-deploy#readme",
+  "homepage": "https://github.com/stylefieber/deploydo#readme",
   "dependencies": {
     "current-git-branch": "^1.1.0",
     "easy-ftp": "^0.4.1",
     "git-repo-name": "^1.0.1",
-    "node-sftp-deploy-i": "^1.0.41",
     "readline-sync": "^1.4.10"
   }
 }

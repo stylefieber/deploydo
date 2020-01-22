@@ -9,6 +9,7 @@ const workingDir = process.cwd()
 const branchNameF = require('current-git-branch')
 const repoNameF = require('git-repo-name')
 const readlineSync = require('readline-sync')
+const glob = require("glob")
 
 //console.log(__dirname)
 //return
@@ -48,11 +49,24 @@ try {
 
 let files = []
 
+let uploadFiles = []
+
 const ftp = new EasyFtp()
 
 ftp.on('open', () => {
   console.log('\nConnection to server established\n')
   console.log("\n\x1b[32mUploading...\n")
+  ftp.upload(uploadFiles, function (err) {
+    console.log(config.remotePath)
+    if (err) {
+      console.error(err)
+      exit()
+    }
+    console.log("\n\x1b[32mDeployment Done!\n")
+    console.log('\x1b[0m')
+    ftp.close()
+  })
+  /*
   ftp.upload(files, config.remotePath, function (err) {
     if (err) {
       console.error(err)
@@ -62,6 +76,7 @@ ftp.on('open', () => {
     console.log('\x1b[0m')
     ftp.close()
   })
+  */
 })
 ftp.on('error', (err) => {
   if (err) console.log(err)
@@ -128,9 +143,17 @@ async function run() {
       "type": config.type
     }
 
-    fs.readdirSync(workingDir + '' + config.sourcePath).forEach(file => {
-      files.push(workingDir + '' + config.sourcePath + '/' + file)
-    })
+    let f = glob.sync('**', {cwd: workingDir + config.sourcePath, ignore: config.ignore || []})
+    console.log(f)
+
+    for (let file of f) {
+      uploadFiles.push({
+        local: '.' + config.sourcePath + '/' + file,
+        remote: config.remotePath + '/' + file
+      })
+    }
+
+    console.log(uploadFiles)
 
     ftp.connect(conf)
 

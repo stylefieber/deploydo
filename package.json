@@ -33,6 +33,7 @@
     "current-git-branch": "^1.1.0",
     "easy-ftp": "^0.4.1",
     "git-repo-name": "^1.0.1",
+    "glob": "^7.1.6",
     "readline-sync": "^1.4.10"
   }
 }

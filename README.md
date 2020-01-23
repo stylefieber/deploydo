@@ -77,6 +77,13 @@ $ deploydo --deployConfigFile=configFilename.js
 
 **ignore**: Glob pattern. Which files you want not to be uploaded. Check https://globster.xyz/ for examples.
 
+| glob pattern  | Means   
+| ------------- |:-------------:|
+| /myapp/config/*     | All files inside config directory |
+| \*\*/\*.png    | All .png files in all directories      | 
+| \*\*/\*.{png,ico,md} | All .png, .ico or .md files in all directories      |
+| /myapp/src/\*\*/\*.ts | All .ts files inside src directory (and all its subdirectories) |
+
 **type**: ftp or sftp. sftp is basically ftp over ssh.
 
 **buildCommand**: If you want to execute a build command before uploading, you can type it here. For example <code>npm run build</code>

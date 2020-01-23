@@ -57,7 +57,6 @@ ftp.on('open', () => {
   console.log('\nConnection to server established\n')
   console.log("\n\x1b[32mUploading...\n")
   ftp.upload(uploadFiles, function (err) {
-    console.log(config.remotePath)
     if (err) {
       console.error(err)
       exit()
@@ -144,7 +143,7 @@ async function run() {
     }
 
     let f = glob.sync('**', {cwd: workingDir + config.sourcePath, ignore: config.ignore || []})
-    console.log(f)
+    //console.log(f)
 
     for (let file of f) {
       uploadFiles.push({
@@ -153,7 +152,7 @@ async function run() {
       })
     }
 
-    console.log(uploadFiles)
+    //console.log(uploadFiles)
 
     ftp.connect(conf)
 

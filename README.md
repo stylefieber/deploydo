@@ -19,7 +19,7 @@ const config = {
     pass: "goodpassword",
     remotePath: "/public_html",
     sourcePath: "/dist",
-    ignore: ["**/*.zip", "**/*.txt"],
+    ignore: ["**/*.zip", "**/*.txt"], //ignores all zip and all txt files in all directories
     type: "sftp",
     buildCommand: 'npm run build' //set to null or remove property for no build
   },

@@ -19,7 +19,7 @@ const config = {
     pass: "goodpassword",
     remotePath: "/public_html",
     sourcePath: "/dist",
-    ignore: null;
+    ignore: ["**/*.zip", "**/*.txt"],
     type: "sftp",
     buildCommand: 'npm run build' //set to null or remove property for no build
   },
@@ -75,7 +75,7 @@ $ deploydo --deployConfigFile=configFilename.js
 
 **sourcePath**: path relative to your working directory.
 
-**ignore**: Glob pattern. Which files you want not to be uploaded. Check https://globster.xyz/ for examples.
+**ignore**: Glob pattern or an Array of glob patterns. Which files you want not to be uploaded. Check https://globster.xyz/ for examples.
 
 | glob pattern  | Means   
 | ------------- |:-------------:|

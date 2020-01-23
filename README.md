@@ -19,6 +19,7 @@ const config = {
     pass: "goodpassword",
     remotePath: "/public_html",
     sourcePath: "/dist",
+    ignore: null;
     type: "sftp",
     buildCommand: 'npm run build' //set to null or remove property for no build
   },
@@ -29,6 +30,7 @@ const config = {
     pass: "good password",
     remotePath: "/public_html",
     sourcePath: "/dist",
+    ignore: "**/*.png", //ignores all .png files in all directories
     type: "ftp",
     buildCommand: null //'npm run build'
   }
@@ -72,6 +74,8 @@ $ deploydo --deployConfigFile=configFilename.js
 **remotePath**: path on your server. When you connect through sftp, you might be in the root folder, even if your ftp client sends you to another one when connecting.
 
 **sourcePath**: path relative to your working directory.
+
+**ignore**: Glob pattern. Which files you want not to be uploaded. Check https://globster.xyz/ for examples.
 
 **type**: ftp or sftp. sftp is basically ftp over ssh.
 

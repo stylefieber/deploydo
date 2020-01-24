@@ -9,6 +9,7 @@ const workingDir = process.cwd()
 const branchNameF = require('current-git-branch')
 const repoNameF = require('git-repo-name')
 const readlineSync = require('readline-sync')
+const jsonfile = require('jsonfile')
 const glob = require("glob")
 
 //console.log(__dirname)
@@ -17,13 +18,11 @@ const glob = require("glob")
 let branchName
 try {
   branchName = branchNameF()
-  console.log('branchname', branchName)
 } catch(err) {
 
 }
 let repoName
 if (branchName) {
-  console.log("get repo")
   try {
     repoName = repoNameF.sync()
   } catch(err) {
@@ -38,13 +37,20 @@ if (options.sample) {
   exit()
 }
 
-const configPath = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.conf.js'
+const configPath = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.conf.json'
+const configPathPw = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.pw.conf.js'
 let configObj
 try {
-  configObj = require(configPath)
+  //configObj = require(configPath)
+  configObj = jsonfile.readFileSync(configPath)
 } catch(err) {
   console.error("\n\n\x1b[31mCannot find '"+configPath+"'. Please visit https://www.npmjs.com/package/deploydo and read the documentation. Type 'deploydo sample' to get a sample file.")
   exit()
+}
+try {
+  configPwObj = require(configPathPw)
+} catch(err) {
+  
 }
 
 let files = []
@@ -109,6 +115,14 @@ if (options.env) {
   } else {
     console.error("\n\n\x1b[31mCouldn't find default config environment. Please read the documentation: https://www.npmjs.com/package/deploydo \n\n")
     exit()
+  }
+}
+
+if (!config.pass) {
+  let pass = readlineSync.question('\n\n\x1b[36mPlease enter password: ', {hideEchoBack: true, mask: '*'})
+  let savePass = readlineSync.question('\n\n\x1b[36mShall I save the password for you in an extra file (deploy.pw.conf.js) and then add it to .gitignore? (So you can commit the deploy.conf.js without password) (y/n) ')
+  if (savePass == 'y' || savePass == 'Y') {
+    	
   }
 }
 

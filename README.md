@@ -18,24 +18,24 @@ Use this as template:
 ```
 {
   default: {
-    host: 'yourhost.com',
+    host: "yourhost.com",
     port: "22",
     user: "username",
     remotePath: "/public_html",
     sourcePath: "/dist",
-    ignore: ["**/*.zip", "**/*.txt"], //ignores all zip and all txt files in all directories
+    ignore: ["**/*.zip", "**/*.txt"],
     type: "sftp",
-    buildCommand: 'npm run build' //set to null or remove property for no build
+    buildCommand: "npm run build"
   },
   production: {
-    host: 'yourhost.com',
+    host: "yourhost.com",
     port: "21",
     user: "username",
     remotePath: "/public_html",
     sourcePath: "/dist",
-    ignore: "**/*.png", //ignores all .png files in all directories
+    ignore: "**/*.png",
     type: "ftp",
-    buildCommand: null //'npm run build'
+    buildCommand: null
   }
 }
 ```

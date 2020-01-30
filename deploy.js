@@ -123,9 +123,9 @@ async function run() {
   try {
     let really
     if (branchName && repoName) {
-      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nRepository: ' + repoName + '\ncurrent branch: ' + branchName + '\nHost: ' + config.host + '\nlocal Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
+      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nRepository: ' + repoName + '\ncurrent branch: ' + branchName + '\nHost: ' + config.host + '\nlocal Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n) ')
     } else {
-      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nHost: ' + config.host + 'local Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n)')
+      really = readlineSync.question('\n\n\x1b[36mPlease check if everything is correct:\n\nHost: ' + config.host + 'local Folder: ' + config.sourcePath + '\nremote Folder: ' + config.remotePath + '\n\nShould I start the deployment? (y/n) ')
     }
     if (really !== 'y' && really !== 'Y') {
       console.log("\x1b[36mDeployment cancelled by user")
@@ -203,7 +203,6 @@ function handlePassword() {
     fileExists = false
   }
   if (!configPwObj) configPwObj = {}
-  console.log(configPwObj)
   //if yes, check if pw for environment has been set
   if (fileExists) {
     if (configPwObj[options.env]) {

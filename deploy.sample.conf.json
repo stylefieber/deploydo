@@ -1,0 +1,22 @@
+{
+  "default": {
+    "host": "yourhost.com",
+    "port": "22",
+    "user": "username",
+    "remotePath": "/public_html",
+    "ignore": null,
+    "sourcePath": "/dist",
+    "type": "sftp",
+    "buildCommand": "npm run build"
+  },
+  "production": {
+    "host": "yourhost.com",
+    "port": "21",
+    "user": "username",
+    "remotePath": "/public_html",
+    "ignore": null,
+    "sourcePath": "/dist",
+    "type": "ftp",
+    "buildCommand": null
+  }
+}

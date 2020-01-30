@@ -32,25 +32,21 @@ if (branchName) {
 const options = getArgs()
 
 if (options.sample) {
-  fs.copyFileSync(__dirname + '/deploy.sample.conf.js', workingDir + '/deploy.sample.conf.js')
-  console.log("\n\nSample file copied. Rename it to deploy.conf.js to use it.\n")
+  fs.copyFileSync(__dirname + '/deploy.sample.conf.json', workingDir + '/deploy.sample.conf.json')
+  console.log("\n\nSample file copied. Rename it to deploy.conf.json to use it.\n")
   exit()
 }
 
 const configPath = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.conf.json'
-const configPathPw = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.pw.conf.js'
+const configPathPw = workingDir + '/deploy.pw.conf.json'
 let configObj
+let configPwObj
 try {
   //configObj = require(configPath)
   configObj = jsonfile.readFileSync(configPath)
 } catch(err) {
   console.error("\n\n\x1b[31mCannot find '"+configPath+"'. Please visit https://www.npmjs.com/package/deploydo and read the documentation. Type 'deploydo sample' to get a sample file.")
   exit()
-}
-try {
-  configPwObj = require(configPathPw)
-} catch(err) {
-  
 }
 
 let files = []
@@ -118,14 +114,9 @@ if (options.env) {
   }
 }
 
-if (!config.pass) {
-  let pass = readlineSync.question('\n\n\x1b[36mPlease enter password: ', {hideEchoBack: true, mask: '*'})
-  let savePass = readlineSync.question('\n\n\x1b[36mShall I save the password for you in an extra file (deploy.pw.conf.js) and then add it to .gitignore? (So you can commit the deploy.conf.js without password) (y/n) ')
-  if (savePass == 'y' || savePass == 'Y') {
-    	
-  }
-}
 
+handlePassword()
+handleGitignore()
 
 
 async function run() {
@@ -200,6 +191,68 @@ function getArgs() {
     })
   return args
 }
+
+function handlePassword() {
+  //check if pw file exists
+  let fileExists = false
+  let envPasswordExists = false
+  try {
+    configPwObj = jsonfile.readFileSync(configPathPw)
+    fileExists = true
+  } catch(err) {
+    fileExists = false
+  }
+  if (!configPwObj) configPwObj = {}
+  console.log(configPwObj)
+  //if yes, check if pw for environment has been set
+  if (fileExists) {
+    if (configPwObj[options.env]) {
+      envPasswordExists = true
+      config.pass = configPwObj[options.env]
+    }
+    else envPasswordExists = false
+  }
+  //if not, ask user for pw and if the pw should be saved
+  if (!envPasswordExists) {
+    let pass = readlineSync.question('\n\n\x1b[36mPlease enter password: ', {hideEchoBack: true, mask: '*'})
+    config.pass = pass
+    let savePass = readlineSync.question('\n\n\x1b[36mShall I save the password for you in an extra file (deploy.pw.conf.json) (y/n) ')
+    //if yes, save it
+    if (savePass == 'y' || savePass == 'Y') {
+      if (!fileExists) {
+        fs.writeFileSync(configPathPw, '{}')
+      }
+      configPwObj[options.env] = config.pass
+      jsonfile.writeFileSync(configPathPw, configPwObj)
+    }
+  }
+}
+
+function handleGitignore() {
+  let gitignoreExists = false
+  let foundEntry = false
+  let gitignoreFilePath = workingDir + '/.gitignore'
+  if (fs.existsSync(gitignoreFilePath)) {
+    gitignoreExists = true
+  }
+  let ignoreContent = ''
+  if (!gitignoreExists) {
+    fs.writeFileSync(gitignoreFilePath, 'deploy.pw.conf.json')
+  } else {
+    ignoreContent = fs.readFileSync(workingDir + '/.gitignore', 'utf8')
+    foundEntry = ignoreContent.indexOf('deploy.pw.conf.json')
+    if (foundEntry === -1) foundEntry = false
+    else foundEntry = true
+  }
+  if (!foundEntry) {
+    let shallWrite = readlineSync.question('\n\n\x1b[36mThere is a deploy.pw.conf.json in your working directory which is currently not in your .gitignore or there is no .gitignore file. Should I take care and add this file to .gitignore (y/n) ')
+    if (shallWrite == 'y' || shallWrite == 'Y') {
+      let content = 'deploy.pw.conf.json\n' + ignoreContent
+      fs.writeFileSync(workingDir + '/.gitignore', content, 'utf8')
+    }
+  }
+}
+
 
 function exit() {
   console.log('\x1b[0m')

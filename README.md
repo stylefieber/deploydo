@@ -1,14 +1,19 @@
 # deploydo
 
-Deploydo was created because we have a lot of projects which are simply deployed by uploading files via ftp. This process is now automated by using deploydo.
+Deploydo was created because we have a lot of projects which are simply deployed by uploading files via ftp / sftp. This process is now automated by using deploydo.
+
+### Version 2
+Breaking changes
+* config files are json files and no js files anymore. 
+* password is not saved in standart config file anymore. You can now commit the config file (if it's okay for you). The password is saved in a separated file, which should not be commited.
 
 ### installation 
 <code>npm install -g deploydo</code>
 
-**warning** add deploy.conf.js to your .gitignore **!**
+**warning** add deploy.conf.json to your .gitignore if you don't want to commit your deployment data **!**
 
 ### configuration
-Create <code>deploy.conf.js</code> file in your project directory.
+Create <code>deploy.conf.json</code> file in your project directory.
 Use this as template:
 ```
 const config = {
@@ -16,7 +21,6 @@ const config = {
     host: 'yourhost.com',
     port: "22",
     user: "username",
-    pass: "goodpassword",
     remotePath: "/public_html",
     sourcePath: "/dist",
     ignore: ["**/*.zip", "**/*.txt"], //ignores all zip and all txt files in all directories
@@ -27,7 +31,6 @@ const config = {
     host: 'yourhost.com',
     port: "21",
     user: "username",
-    pass: "good password",
     remotePath: "/public_html",
     sourcePath: "/dist",
     ignore: "**/*.png", //ignores all .png files in all directories
@@ -35,7 +38,6 @@ const config = {
     buildCommand: null //'npm run build'
   }
 }
-module.exports = config
 ```
 
 To create a config sample file inside your current directory:
@@ -59,7 +61,7 @@ $ deploydo
 
 If you want to use another config file use
 ```shell
-$ deploydo --deployConfigFile=configFilename.js
+$ deploydo --deployConfigFile=configFilename.json
 ```
 
 ### Config options
@@ -68,8 +70,6 @@ $ deploydo --deployConfigFile=configFilename.js
 **port**: 21 for ftp 22 for sftp. Might depend on your server setting.
 
 **user**: ftp/sftp username.
-
-**pass**: password.
 
 **remotePath**: path on your server. When you connect through sftp, you might be in the root folder, even if your ftp client sends you to another one when connecting.
 
@@ -87,3 +87,10 @@ $ deploydo --deployConfigFile=configFilename.js
 **type**: ftp or sftp. sftp is basically ftp over ssh.
 
 **buildCommand**: If you want to execute a build command before uploading, you can type it here. For example <code>npm run build</code>
+
+
+### Passwords
+
+You will be asked to enter your password. You can then save it automatically in a separated password file. The password is **not** encrypted when saved. After that you will be asked if the script should add this file to your .gitignore (what you should do).
+
+Only use this option when this is no problem for you.

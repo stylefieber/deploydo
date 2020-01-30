@@ -16,7 +16,7 @@ Breaking changes
 Create <code>deploy.conf.json</code> file in your project directory.
 Use this as template:
 ```
-const config = {
+{
   default: {
     host: 'yourhost.com',
     port: "22",

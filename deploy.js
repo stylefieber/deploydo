@@ -106,6 +106,7 @@ if (options.env) {
     exit()
   }
 } else {
+  options.env = 'default'
   if (configObj.default) {
     config = configObj.default
   } else {

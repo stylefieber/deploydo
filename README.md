@@ -17,25 +17,25 @@ Create <code>deploy.conf.json</code> file in your project directory.
 Use this as template:
 ```
 {
-  default: {
-    host: "yourhost.com",
-    port: "22",
-    user: "username",
-    remotePath: "/public_html",
-    sourcePath: "/dist",
+  "default": {
+    "host": "yourhost.com",
+    "port": "22",
+    "user": "username",
+    "remotePath": "/public_html",
+    "sourcePath": "/dist",
     ignore: ["**/*.zip", "**/*.txt"],
-    type: "sftp",
-    buildCommand: "npm run build"
+    "type": "sftp",
+    "buildCommand": "npm run build"
   },
-  production: {
-    host: "yourhost.com",
-    port: "21",
-    user: "username",
-    remotePath: "/public_html",
-    sourcePath: "/dist",
-    ignore: "**/*.png",
-    type: "ftp",
-    buildCommand: null
+  "production": {
+    "host": "yourhost.com",
+    "port": "21",
+    "user": "username",
+    "remotePath": "/public_html",
+    "sourcePath": "/dist",
+    "ignore": "**/*.png",
+    "type": "ftp",
+    "buildCommand": null
   }
 }
 ```

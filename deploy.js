@@ -12,6 +12,8 @@ const readlineSync = require('readline-sync')
 const jsonfile = require('jsonfile')
 const glob = require("glob")
 
+const version = require('./package.json').version
+
 //console.log(__dirname)
 //return
 
@@ -133,7 +135,7 @@ async function run() {
       console.log("\x1b[36mDeployment cancelled by user")
       exit()
     }
-    console.log('\n\x1b[32m', '=== deployment script started ===\n')
+    console.log('\n\x1b[32m', '=== deployment script started - deploydo ' + version +' - ===\n')
     if (config.buildCommand) {
       console.log('\n\x1b[32m', '\nBuilding App for production...\n')
       var child = await exec(config.buildCommand)

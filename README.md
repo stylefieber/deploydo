@@ -25,6 +25,7 @@ Use this as template:
     "sourcePath": "/dist",
     ignore: ["**/*.zip", "**/*.txt"],
     "type": "sftp",
+    "verbose": true,
     "buildCommand": "npm run build"
   },
   "production": {
@@ -35,6 +36,7 @@ Use this as template:
     "sourcePath": "/dist",
     "ignore": "**/*.png",
     "type": "ftp",
+    "verbose": false,
     "buildCommand": null
   }
 }
@@ -85,6 +87,8 @@ $ deploydo --deployConfigFile=configFilename.json
 | /myapp/src/\*\*/\*.ts | All .ts files inside src directory (and all its subdirectories) |
 
 **type**: ftp or sftp. sftp is basically ftp over ssh.
+
+**verbose**: liIf true, list files in console during upload.
 
 **buildCommand**: If you want to execute a build command before uploading, you can type it here. For example <code>npm run build</code>
 

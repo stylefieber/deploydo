@@ -82,10 +82,11 @@ ftp.on('open', () => {
 ftp.on('error', (err) => {
   if (err) console.log(err)
 })
-ftp.on('upload', () => {
+ftp.on('upload', (i) => {
   //console.log('upload')
 })
-ftp.on('uploading', () => {
+ftp.on('uploading', (i) => {
+  config.verbose && console.log(i.remotePath)
   //console.log('upload')
 })
 ftp.on('close', () => {
@@ -149,13 +150,18 @@ async function run() {
     }
 
     let f = glob.sync('**', {cwd: workingDir + config.sourcePath, ignore: config.ignore || []})
-    //console.log(f)
 
     for (let file of f) {
-      uploadFiles.push({
-        local: '.' + config.sourcePath + '/' + file,
-        remote: config.remotePath + '/' + file
-      })
+      let lPath = '.' + config.sourcePath + '/' + file
+      /*
+      dont upload directories, because all child files will be uploaded; but all child files will be uploaded again; thats unnecessary overhead; additionally the ignore filter wouldn't work
+      */
+      if (!(fs.existsSync(lPath) && fs.lstatSync(lPath).isDirectory())) {
+        uploadFiles.push({
+          local: lPath,
+          remote: config.remotePath + '/' + file
+        })
+      }
     }
 
     //console.log(uploadFiles)

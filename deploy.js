@@ -11,6 +11,8 @@ const repoNameF = require('git-repo-name')
 const readlineSync = require('readline-sync')
 const jsonfile = require('jsonfile')
 const glob = require("glob")
+const eventToPromise = require('event-to-promise')
+const md5File = require('md5-file')
 
 const version = require('./package.json').version
 
@@ -41,6 +43,7 @@ if (options.sample) {
 
 const configPath = options.deployConfigFile ? workingDir + '/' + options.deployConfigFile : workingDir + '/deploy.conf.json'
 const configPathPw = workingDir + '/deploy.pw.conf.json'
+const pathToDownloadedCache = workingDir + '/deploy.cache.json'
 let configObj
 let configPwObj
 try {
@@ -58,19 +61,10 @@ let uploadFiles = []
 const ftp = new EasyFtp()
 
 ftp.on('open', () => {
+  /*
   console.log('\nConnection to server established\n')
   console.log("\n\x1b[32mUploading...\n")
   ftp.upload(uploadFiles, function (err) {
-    if (err) {
-      console.error(err)
-      exit()
-    }
-    console.log("\n\x1b[32mDeployment Done!\n")
-    console.log('\x1b[0m')
-    ftp.close()
-  })
-  /*
-  ftp.upload(files, config.remotePath, function (err) {
     if (err) {
       console.error(err)
       exit()
@@ -122,6 +116,20 @@ if (options.env) {
 handlePassword()
 handleGitignore()
 
+/*
+cache file feature:
+
+check if deploy-cache is activated, if yes:
+download deploy.cache.json
+
+check filesize / hash with file which should be uploaded
+only add to uploads if not equal
+
+if file is uploaded add current hash to deploy.cache.json
+
+after uploading all files upload deploy.cache.json to root folder
+*/
+
 
 async function run() {
   try {
@@ -169,13 +177,83 @@ async function run() {
     //console.log(uploadFiles)
 
     ftp.connect(conf)
+    await eventToPromise(ftp, 'open')
+    await downloadCache()
+    let cacheArray
+    let fileExists
+    try {
+      cacheArray = jsonfile.readFileSync(pathToDownloadedCache)
+      fileExists = true
+    } catch(err) {
+      fileExists = false
+      cacheArray = []
+    }
+    for (let f of uploadFiles) {
+      const hash = md5File.sync(f.local)
+      console.log(f.local, hash)
+      let findInCache = cacheArray.find((i) => i.fileName === f.local)
+      //if file found in cache array
+      if (findInCache) {
+        //check if md5 is the same
+        console.log("found in cache")
+        if (findInCache.md5 === hash) {
+          console.log("same md5")
+          //flag to remove
+          f.removeFromList = true
+        } else {
+          //refresh hash
+          findInCache.md5 = hash
+        }
+      } else {
+        //add to cache
+        cacheArray.push({
+          fileName: f.local,
+          md5: hash
+        })
+      }
+    }
+    jsonfile.writeFileSync(pathToDownloadedCache, cacheArray)
+    uploadFiles.push({
+      local: pathToDownloadedCache,
+      remote: config.remotePath + '/deploy.cache.json'
+    })
+    uploadFiles = uploadFiles.filter((i) => !i.removeFromList)
+    console.log(uploadFiles)
 
+    handleUpload(conf)
+    
     return
 
   } catch(err) {
     console.log(err)
     return
   }
+}
+
+function downloadCache() {
+  return new Promise((resolve, reject) => {
+    ftp.download("/deploy.cache.json", "/deploy.cache.json", function(err){
+      if (err) {
+        resolve(true)
+      } else {
+        resolve(true)
+      }
+    })
+  })
+}
+
+function handleUpload(conf) {
+  console.log('\nConnection to server established\n')
+  console.log("\n\x1b[32mUploading...\n")
+  ftp.upload(uploadFiles, function (err) {
+    if (err) {
+      console.error(err)
+      exit()
+    }
+    console.log("\n\x1b[32mDeployment Done!\n")
+    console.log('\x1b[0m')
+    ftp.close()
+  })
 }
 
 function getArgs() {

@@ -32,9 +32,11 @@
   "dependencies": {
     "current-git-branch": "^1.1.0",
     "easy-ftp": "^0.4.1",
+    "event-to-promise": "^0.8.0",
     "git-repo-name": "^1.0.1",
     "glob": "^7.1.6",
     "jsonfile": "^5.0.0",
+    "md5-file": "^4.0.0",
     "readline-sync": "^1.4.10"
   }
 }

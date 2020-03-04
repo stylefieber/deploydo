@@ -88,7 +88,9 @@ $ deploydo --deployConfigFile=configFilename.json
 
 **type**: ftp or sftp. sftp is basically ftp over ssh.
 
-**verbose**: liIf true, list files in console during upload.
+**verbose**: If true, list files in console during upload.
+
+**useCache**: If true, cache system is used. A deploy.cache.json is uploaded in destination folder, which has hash values of the uploaded files. Next deployment this file is downloaded and checked against the local files. Only changed or new files will then be uploaded.
 
 **buildCommand**: If you want to execute a build command before uploading, you can type it here. For example <code>npm run build</code>
 

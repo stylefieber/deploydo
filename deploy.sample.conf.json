@@ -8,6 +8,7 @@
     "sourcePath": "/dist",
     "type": "sftp",
     "verbose": true,
+    "useCache": true,
     "buildCommand": "npm run build"
   },
   "production": {
@@ -19,6 +20,7 @@
     "sourcePath": "/dist",
     "type": "ftp",
     "verbose": false,
+    "useCache": true,
     "buildCommand": null
   }
 }

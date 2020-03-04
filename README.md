@@ -23,9 +23,10 @@ Use this as template:
     "user": "username",
     "remotePath": "/public_html",
     "sourcePath": "/dist",
-    ignore: ["**/*.zip", "**/*.txt"],
+    "ignore": ["**/*.zip", "**/*.txt"],
     "type": "sftp",
     "verbose": true,
+    "useCache": true,
     "buildCommand": "npm run build"
   },
   "production": {
@@ -37,6 +38,7 @@ Use this as template:
     "ignore": "**/*.png",
     "type": "ftp",
     "verbose": false,
+    "useCache": true,
     "buildCommand": null
   }
 }
